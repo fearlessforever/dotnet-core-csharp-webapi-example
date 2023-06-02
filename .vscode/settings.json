@@ -2,6 +2,7 @@
   "files.exclude": {
     "My/bin": true ,
     "My/obj": true ,
+    "MyLibrary/bin": true ,
     "MyLibrary/obj": true ,
   }
 }

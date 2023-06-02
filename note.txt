@@ -1,0 +1,13 @@
+- dotnet new classlib -o MyLibrary , untuk membuat library class
+- dotnet add My.csproj reference ../MyLibrary/MyLibrary.csproj , cmd didalam folder MY untuk menambahkan reference MyLibrary ke dalam My
+
+
+
+* Untuk Running App
+
+dotnet run --launch-profile http , di dalama folder My/
+
+
+* Untuk Menambahkan Package ke dalam Project
+
+dotnet add package Microsoft.AspNetCore.ResponseCompression , di dalama folder My/ . contoh jika ingin menambahkan package compression

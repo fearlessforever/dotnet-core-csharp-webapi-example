@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using My.Util;
+
+using NewWeatherForecast = MyLibrary.Weather.WeatherForecast;
 
 namespace My.Controllers.Weather;
 
@@ -19,9 +22,9 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public IEnumerable<NewWeatherForecast> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        return Enumerable.Range(1, 5).Select(index => new NewWeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
             TemperatureC = Random.Shared.Next(-20, 55),
@@ -31,8 +34,28 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public string[] test()
+    public async Task<IResult> test2()
     {
-        return Summaries;
+        var listData = Enumerable.Range(1, 5).Select(index => new NewWeatherForecast
+        {
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        })
+        .ToArray();
+
+        return await Task.Run(() => MyApiResponse.generate( data:listData ) );
+    }
+    
+    [HttpGet("[action]")]
+    public async Task<IResult> test()
+    {
+        // throw new System.Web(404);
+        throw new MyException("Invalid: your request is not complete" , 401 );
+        throw new MyException("Not Allowed" , 403 );
+        throw new Exception("Oke deh");
+        throw new InvalidDataException();
+        return await Task.Run(() => MyApiResponse.generate( data:Summaries , code:401 , isHeaderStatus:true ) );
+        // return MyApiResponse.generate( data:Summaries , code:404 , isHeaderStatus:true );
     }
 }

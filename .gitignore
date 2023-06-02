@@ -3,6 +3,7 @@
 # dependencies
 /My/bin
 /My/obj
+/MyLibrary/bin
 /MyLibrary/obj
 
 # misc
