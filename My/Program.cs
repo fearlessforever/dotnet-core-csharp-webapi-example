@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
+using My.Util.CustomLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddResponseCompression( options => {
+builder.Services.AddResponseCompression( configureOptions: options => {
     // ini untuk aktifkan service fitur compress response size , di function ini hnyak tidak di set opsi tambahan
     // misal opsi
     // options.EnableForHttps = true;
 });
+
+//======================================== Background Task ( in this case , Custom Logger )
+// builder.Services.AddSingleton<ILogRepository, LogRepository>( _ => new LogRepository( builder.Configuration.GetConnectionString("DefaultConnection") ?? "" ));
+
+// line ini menambahkan service tapi ada warning kemungkinan reference null
+// builder.Services.AddSingleton<IMyLoggerService, MyLoggerService>();
+// builder.Services.AddHostedService<MyLoggerService>( sp => sp.GetService<IMyLoggerService>() as MyLoggerService );
+
+// ini yang benar , Custom Logger
+builder.Services.AddSingleton<MyLoggerService>();
+builder.Services.AddSingleton<IMyLoggerService>( implementationFactory: provider => provider.GetRequiredService<MyLoggerService>() );
+builder.Services.AddHostedService<MyLoggerService>( implementationFactory: provider => provider.GetRequiredService<MyLoggerService>() );
+//====================================================================================================
 
 var app = builder.Build();
 
@@ -44,6 +58,8 @@ app.UseExceptionHandler( _appExceptionHandler =>{
         {
             context.Response.StatusCode = (exception as My.Util.MyException)?.statusCode ?? context.Response.StatusCode ;
         }
+
+        MyLoggerService.LogStatic( LogLevel.Error , exception?.Message == null ? "Something is Wrong" : exception.Message );
         
         await context.Response.WriteAsync( JsonSerializer.Serialize( new My.Util.MyApiResponse{
              message =  exception?.Message == null ? "Something is Wrong" : exception.Message ,

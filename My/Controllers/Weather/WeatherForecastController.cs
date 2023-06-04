@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using My.Util;
+using My.Util.CustomLogging;
 
 using NewWeatherForecast = MyLibrary.Weather.WeatherForecast;
 
@@ -9,6 +10,7 @@ namespace My.Controllers.Weather;
 [Route("weather/[controller]")]
 public class WeatherForecastController : ControllerBase
 {
+    private readonly IMyLoggerService Logger;
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -16,9 +18,10 @@ public class WeatherForecastController : ControllerBase
 
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger , IMyLoggerService loggerDB )
     {
         _logger = logger;
+        Logger = loggerDB;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -43,6 +46,9 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+        
+        Logger.Log(LogLevel.Debug, $"GET /Recipes/{listData}");
+        Logger.Log(LogLevel.Debug, System.Text.Json.JsonSerializer.Serialize(listData) );
 
         return await Task.Run(() => MyApiResponse.generate( data:listData ) );
     }

@@ -5,6 +5,7 @@
 /My/obj
 /MyLibrary/bin
 /MyLibrary/obj
+/logs/*
 
 # misc
 .DS_Store
