@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using My.Util;
 using My.Util.CustomLogging;
+using MyDataEF;
 
 using NewWeatherForecast = MyLibrary.Weather.WeatherForecast;
 
@@ -11,6 +12,7 @@ namespace My.Controllers.Weather;
 public class WeatherForecastController : ControllerBase
 {
     private readonly IMyLoggerService Logger;
+    private readonly MyDB DB;
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,10 +20,11 @@ public class WeatherForecastController : ControllerBase
 
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger , IMyLoggerService loggerDB )
+    public WeatherForecastController(ILogger<WeatherForecastController> logger , IMyLoggerService loggerDB , MyDB db )
     {
         _logger = logger;
         Logger = loggerDB;
+        DB = db;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -57,11 +60,29 @@ public class WeatherForecastController : ControllerBase
     public async Task<IResult> test()
     {
         // throw new System.Web(404);
-        throw new MyException("Invalid: your request is not complete" , 401 );
-        throw new MyException("Not Allowed" , 403 );
-        throw new Exception("Oke deh");
-        throw new InvalidDataException();
-        return await Task.Run(() => MyApiResponse.generate( data:Summaries , code:401 , isHeaderStatus:true ) );
+        // throw new MyException("Invalid: your request is not complete" , 401 );
+        // throw new MyException("Not Allowed" , 403 );
+        // throw new Exception("Oke deh");
+        // throw new InvalidDataException();
+        return await Task.Run( async () =>{
+            DB.Projects.Add(
+                new MyLibrary.Models.Project{ ProjectId = 1 }
+            );
+            DB.Projects.Add(
+                new MyLibrary.Models.Project{ ProjectId = 2 }
+            );
+            await DB.SaveChangesAsync();
+
+           return MyApiResponse.generate( data: DB.Projects.ToList() , code:200 , isHeaderStatus:true );
+        });
         // return MyApiResponse.generate( data:Summaries , code:404 , isHeaderStatus:true );
+    }
+
+    [HttpGet("[action]")]
+    public IResult check(){
+        
+
+        return MyApiResponse.generate( data: DB.Tickets.ToList() , code:200 , isHeaderStatus:true ) ;
+        // return MyApiResponse.generate( data: DB.Tickets.ToList() , code:200 , isHeaderStatus:true ) ;
     }
 }

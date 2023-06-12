@@ -5,6 +5,8 @@
 /My/obj
 /MyLibrary/bin
 /MyLibrary/obj
+/MyDataEF/bin
+/MyDataEF/obj
 /logs/*
 
 # misc

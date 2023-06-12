@@ -1,5 +1,7 @@
+- dotnet new classlib -o MyDataEF
 - dotnet new classlib -o MyLibrary , untuk membuat library class
 - dotnet add My.csproj reference ../MyLibrary/MyLibrary.csproj , cmd didalam folder MY untuk menambahkan reference MyLibrary ke dalam My
+- dotnet add My.csproj reference ../MyDataEF/MyDataEF.csproj
 
 
 
@@ -11,3 +13,24 @@ dotnet run --launch-profile http , di dalama folder My/
 * Untuk Menambahkan Package ke dalam Project
 
 dotnet add package Microsoft.AspNetCore.ResponseCompression , di dalama folder My/ . contoh jika ingin menambahkan package compression
+
+
+* Aneh , ini di My.Pogram.cs tidak jalan
+
+builder.Services.Configure<MyDB>( dbContext => {
+    dbContext.Database.EnsureDeleted();
+    dbContext.Database.EnsureCreated();
+});
+
+* ini sample untuk set Configure
+
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+builder.Services.Configure<Saml2Configuration>(configuration.GetSection("Saml2"));
+
+* package -> Microsoft.EntityFrameworkCore.Design untuk menggunakan fitur migration dari Entity EntityFrameworkCore
+
+Command CLI
+
+- dotnet ef migrations add NameFileMigrations , ntuk buat file migration
+- dotnet ef database update , untuk menerapkan perubahan ke db ( hapus / ubah / buat ) table / column

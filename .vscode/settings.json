@@ -4,5 +4,7 @@
     "My/obj": true ,
     "MyLibrary/bin": true ,
     "MyLibrary/obj": true ,
+    "MyDataEF/bin": true ,
+    "MyDataEF/obj": true ,
   }
 }
