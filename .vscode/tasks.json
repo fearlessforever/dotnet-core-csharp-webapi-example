@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/My/My.csproj",
+        "${workspaceFolder}/MyApp/MyApp.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -19,7 +19,7 @@
       "type": "process",
       "args": [
         "publish",
-        "${workspaceFolder}/My/My.csproj",
+        "${workspaceFolder}/MyApp/MyApp.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -32,10 +32,29 @@
       "args": [
         "watch",
         "run",
+        "--launch-profile",
+        "http",
         "--project",
-        "${workspaceFolder}/My/My.csproj"
+        "${workspaceFolder}/MyApp/MyApp.csproj"
       ],
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "clear-old-process",
+      "command": "~/.local/my-bash/my-clean-ps-aux.sh",
+      "type": "shell",
+      "args": [
+        "MyApp run",
+      ],
+      "dependsOn":[ "clear-old-process-2" ]
+    },
+    {
+      "label": "clear-old-process-2",
+      "command": "~/.local/my-bash/my-clean-ps-aux.sh",
+      "type": "shell",
+      "args": [
+        "dotnet/7",
+      ]
     }
   ]
 }

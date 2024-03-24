@@ -1,0 +1,14 @@
+{
+  "configProperties": {
+    "System.GC.Server": true,
+    "System.GC.HeapCount": 4 ,
+    "System.GC.Concurrent": false,
+    "System.GC.HeapAffinitizeRanges": "1-4",
+    "System.GC.HeapHardLimit": 509715200 ,
+    "System.Globalization.UseNls": true,
+    
+    "System.Net.DisableIPv6": false,
+    "System.Threading.ThreadPool.MinThreads": 4,
+    "System.Threading.ThreadPool.MaxThreads": 25
+  }
+}

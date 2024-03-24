@@ -1,6 +1,6 @@
 namespace MyLibrary.Models;
 
-public class Ticket
+public record Ticket
 {
   public int TicketId;
   public int ProjectId { get; set; }

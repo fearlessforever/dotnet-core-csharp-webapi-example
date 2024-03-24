@@ -1,7 +1,7 @@
 {
   "files.exclude": {
-    "My/bin": true ,
-    "My/obj": true ,
+    "MyApp/bin": true ,
+    "MyApp/obj": true ,
     "MyLibrary/bin": true ,
     "MyLibrary/obj": true ,
     "MyDataEF/bin": true ,

@@ -4,18 +4,18 @@
 - dotnet add My.csproj reference ../MyDataEF/MyDataEF.csproj
 
 
-
 * Untuk Running App
 
-dotnet run --launch-profile http , di dalama folder My/
+dotnet run --launch-profile http , di dalama folder MyApp/
+dotnet watch run --launch-profile http , di dalama folder MyApp/ untuk hot reload jika ada perubahan
 
 
 * Untuk Menambahkan Package ke dalam Project
 
-dotnet add package Microsoft.AspNetCore.ResponseCompression , di dalama folder My/ . contoh jika ingin menambahkan package compression
+dotnet add package Microsoft.AspNetCore.ResponseCompression , di dalama folder MyApp/ . contoh jika ingin menambahkan package compression
 
 
-* Aneh , ini di My.Pogram.cs tidak jalan
+* Aneh , ini di MyApp.Pogram.cs tidak jalan
 
 builder.Services.Configure<MyDB>( dbContext => {
     dbContext.Database.EnsureDeleted();
@@ -30,7 +30,13 @@ builder.Services.Configure<Saml2Configuration>(configuration.GetSection("Saml2")
 
 * package -> Microsoft.EntityFrameworkCore.Design untuk menggunakan fitur migration dari Entity EntityFrameworkCore
 
-Command CLI
+Command CLI EF , didalam folder MyApp
 
 - dotnet ef migrations add NameFileMigrations , ntuk buat file migration
 - dotnet ef database update , untuk menerapkan perubahan ke db ( hapus / ubah / buat ) table / column
+
+Command CLI
+- my-clean-ps-aux 'MyApp run' && my-clean-ps-aux 'dotnet/7'   , ini custom command di terminal untuk clear proses dari app yg di develop stuck di memory
+
+
+* Contoh - contoh project pke dotnet -> https://github.com/dotnet/sdk/tree/main/src/Assets/TestProjects
